@@ -1,3 +1,5 @@
+#Praca domowa z pierwszych zajec
+
 # 1. Stwórz funkcję o nazwie kostka, która będzie symulować n rzutów kostką.
 
 
