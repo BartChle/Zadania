@@ -363,7 +363,7 @@ library(tm)</code></pre>
 <pre><code>## Ładowanie wymaganego pakietu: NLP</code></pre>
 <pre class="r"><code># 1. Dane wejściowe ----
 docs &lt;- c(&quot;Jupiter is the largest planet&quot;,
-          &quot;Mars ist the fourth planet from the Sun&quot;)
+          &quot;Mars is the fourth planet from the Sun&quot;)
 
 
 
@@ -384,7 +384,6 @@ tdm_m</code></pre>
 ## Terms     1 2
 ##   fourth  0 1
 ##   from    0 1
-##   ist     0 1
 ##   jupiter 1 0
 ##   largest 1 0
 ##   mars    0 1
@@ -407,15 +406,14 @@ tdm_m &lt;- cbind(tdm_m, TF_A, TF_B)
 
 tdm_m</code></pre>
 <pre><code>##         A B TF_A  TF_B
-## fourth  0 1 0.00 0.125
-## from    0 1 0.00 0.125
-## ist     0 1 0.00 0.125
+## fourth  0 1 0.00 0.143
+## from    0 1 0.00 0.143
 ## jupiter 1 0 0.25 0.000
 ## largest 1 0 0.25 0.000
-## mars    0 1 0.00 0.125
-## planet  1 1 0.25 0.125
-## sun     0 1 0.00 0.125
-## the     1 2 0.25 0.250</code></pre>
+## mars    0 1 0.00 0.143
+## planet  1 1 0.25 0.143
+## sun     0 1 0.00 0.143
+## the     1 2 0.25 0.286</code></pre>
 <pre class="r"><code># 3. Obliczenie IDF ----
 
 
@@ -426,11 +424,11 @@ N</code></pre>
 <pre class="r"><code># Liczba dokumentów zawierających każde słowo
 w &lt;- rowSums(tdm_m[, 1:2] &gt; 0)
 w</code></pre>
-<pre><code>##  fourth    from     ist jupiter largest    mars  planet     sun     the 
-##       1       1       1       1       1       1       2       1       2</code></pre>
+<pre><code>##  fourth    from jupiter largest    mars  planet     sun     the 
+##       1       1       1       1       1       2       1       2</code></pre>
 <pre class="r"><code>N/w</code></pre>
-<pre><code>##  fourth    from     ist jupiter largest    mars  planet     sun     the 
-##       2       2       2       2       2       2       1       2       1</code></pre>
+<pre><code>##  fourth    from jupiter largest    mars  planet     sun     the 
+##       2       2       2       2       2       1       2       1</code></pre>
 <pre class="r"><code>IDF &lt;- round(log(N/w), 3)
 
 
@@ -440,15 +438,14 @@ tdm_m &lt;- cbind(tdm_m, IDF)
 
 tdm_m</code></pre>
 <pre><code>##         A B TF_A  TF_B   IDF
-## fourth  0 1 0.00 0.125 0.693
-## from    0 1 0.00 0.125 0.693
-## ist     0 1 0.00 0.125 0.693
+## fourth  0 1 0.00 0.143 0.693
+## from    0 1 0.00 0.143 0.693
 ## jupiter 1 0 0.25 0.000 0.693
 ## largest 1 0 0.25 0.000 0.693
-## mars    0 1 0.00 0.125 0.693
-## planet  1 1 0.25 0.125 0.000
-## sun     0 1 0.00 0.125 0.693
-## the     1 2 0.25 0.250 0.000</code></pre>
+## mars    0 1 0.00 0.143 0.693
+## planet  1 1 0.25 0.143 0.000
+## sun     0 1 0.00 0.143 0.693
+## the     1 2 0.25 0.286 0.000</code></pre>
 <pre class="r"><code># 4. Obliczenie TF-IDF ----
 
 
@@ -461,29 +458,27 @@ tdm_m &lt;- cbind(tdm_m, TFIDF_A, TFIDF_B)
 
 tdm_m</code></pre>
 <pre><code>##         A B TF_A  TF_B   IDF TFIDF_A TFIDF_B
-## fourth  0 1 0.00 0.125 0.693   0.000   0.087
-## from    0 1 0.00 0.125 0.693   0.000   0.087
-## ist     0 1 0.00 0.125 0.693   0.000   0.087
+## fourth  0 1 0.00 0.143 0.693   0.000   0.099
+## from    0 1 0.00 0.143 0.693   0.000   0.099
 ## jupiter 1 0 0.25 0.000 0.693   0.173   0.000
 ## largest 1 0 0.25 0.000 0.693   0.173   0.000
-## mars    0 1 0.00 0.125 0.693   0.000   0.087
-## planet  1 1 0.25 0.125 0.000   0.000   0.000
-## sun     0 1 0.00 0.125 0.693   0.000   0.087
-## the     1 2 0.25 0.250 0.000   0.000   0.000</code></pre>
+## mars    0 1 0.00 0.143 0.693   0.000   0.099
+## planet  1 1 0.25 0.143 0.000   0.000   0.000
+## sun     0 1 0.00 0.143 0.693   0.000   0.099
+## the     1 2 0.25 0.286 0.000   0.000   0.000</code></pre>
 <pre class="r"><code># 5. Macierz częstości z wagami TF-IDF ----
 
 
 tdm_tfidf &lt;- tdm_m[ , 6:7]
 tdm_tfidf</code></pre>
 <pre><code>##         TFIDF_A TFIDF_B
-## fourth    0.000   0.087
-## from      0.000   0.087
-## ist       0.000   0.087
+## fourth    0.000   0.099
+## from      0.000   0.099
 ## jupiter   0.173   0.000
 ## largest   0.173   0.000
-## mars      0.000   0.087
+## mars      0.000   0.099
 ## planet    0.000   0.000
-## sun       0.000   0.087
+## sun       0.000   0.099
 ## the       0.000   0.000</code></pre>
 <pre class="r"><code># Porównaj z implementacją TF-IDF 
 # w funkcji TermDocumentMatrix()
@@ -502,7 +497,6 @@ tdm_tfidf2</code></pre>
 ## Terms     1 2
 ##   fourth  0 1
 ##   from    0 1
-##   ist     0 1
 ##   jupiter 1 0
 ##   largest 1 0
 ##   mars    0 1
@@ -536,14 +530,13 @@ tdm_tfidf &lt;- cbind(tdm_tfidf, tfidf_a, tfidf_b)
 # Teraz porównaj
 tdm_tfidf</code></pre>
 <pre><code>##         TFIDF_A TFIDF_B tfidf_a tfidf_b
-## fourth    0.000   0.087       0       1
-## from      0.000   0.087       0       1
-## ist       0.000   0.087       0       1
+## fourth    0.000   0.099       0       1
+## from      0.000   0.099       0       1
 ## jupiter   0.173   0.000       1       0
 ## largest   0.173   0.000       1       0
-## mars      0.000   0.087       0       1
+## mars      0.000   0.099       0       1
 ## planet    0.000   0.000       0       0
-## sun       0.000   0.087       0       1
+## sun       0.000   0.099       0       1
 ## the       0.000   0.000       0       0</code></pre>
 <pre class="r"><code># Z implementacją TF-IDF w funkcji TermDocumentMatrix()
 tdm_tfidf2</code></pre>
@@ -551,7 +544,6 @@ tdm_tfidf2</code></pre>
 ## Terms     1 2
 ##   fourth  0 1
 ##   from    0 1
-##   ist     0 1
 ##   jupiter 1 0
 ##   largest 1 0
 ##   mars    0 1
